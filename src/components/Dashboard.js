@@ -10,7 +10,10 @@ const Dashboard = props => (
                 /* We'll print our todos here */
             }
             <form>
-                <input name="text"/>
+                <input name="text"
+                value={props.text} 
+                onChange={props.handleChange}
+                />
                 <button>Add Todo</button>
             </form>
         </div>
