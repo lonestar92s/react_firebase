@@ -8,9 +8,16 @@ const Dashboard = props => (
         <div>
             {
                 /* We'll print our todos here */
+            props.todos.map(todo => (
+                    <p key={todo.id}>
+                        <span onClick={() => props.handleRemove(todo.id)}>
+                        X</span>&nbsp;{todo.text}
+                    </p>
+                ))
             }
-            <form>
-                <input name="text"
+            <form onSubmit={props.handleSubmit}>
+                <input 
+                name="text"
                 value={props.text} 
                 onChange={props.handleChange}
                 />

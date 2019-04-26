@@ -4,23 +4,8 @@ import Dashboard from './components/Dashboard'
 import firebase from './firebaseConfig'
 
 // First let's save a piece of data to a variable we can reference later
-const todo = { text: "Clean my room" }
 
-firebase.database().ref('todos')
-.set(todo)
-.then(() => console.log("Todo Written Successfully"))
-.catch(error => {
-    console.log("Something Went Wrong: ", error.message)
-})
 
-const todoText = "Clean my room"
-
-firebase.database().ref('todos')
-.push({text: todoText})
-.then(() => console.log("Todo Written Successfully"))
-.catch(error => {
-    console.log("Something went wrong: ", error.messge)
-})
 
 
 
@@ -63,6 +48,15 @@ export default class App extends Component {
          })
       }
 
+      handleRemove = todoId => {
+            firebase.database().ref(`todos/${todoId}`)
+            .remove()
+            .then(() => console.log("Data Removed Successfully"))
+            .catch(error => { 
+                console.log("Something Went Wrong", error)
+             })
+          }
+
 
   render(){
         return(
@@ -72,7 +66,8 @@ export default class App extends Component {
           todos={this.state.todos}
           text={this.state.text}
           handleChange={this.handleChange}
-          handleSubmit={this.handleSubmit} 
+          handleSubmit={this.handleSubmit}
+          handleRemove={this.handleRemove} 
           />
           </div>
 
