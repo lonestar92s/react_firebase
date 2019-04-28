@@ -3,7 +3,7 @@
 import React from 'react'
 
 const Login = props => (
-    <button>Login with Google</button>
+    <button onClick={props.handleLogin}>Login with Google</button>
 )
 
 export default Login

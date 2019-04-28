@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import './App.css'
 import Dashboard from './components/Dashboard'
+import Login from './components/Login'
 import firebase from './firebaseConfig'
-
-// First let's save a piece of data to a variable we can reference later
-
-
 
 
 
@@ -22,13 +19,28 @@ export default class App extends Component {
       })
       this.setState({ todos: newStateArray })
     })
-}
+        firebase.auth().onAuthStateChanged(firebaseUser => {
+      firebaseUser ?
+        this.setState({
+          user: firebaseUser.displayName,
+          isAuthenticated: true
+        })
+        :
+        this.setState({
+          user: null,
+          isAuthenticated: false
+        })
+    })
+  }
+        
+
+
         state = {
         text: "",
         todos: [],
         user: null,
         isAuthenticated: false
-    }
+        }
       //handle change
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value })
@@ -57,11 +69,24 @@ export default class App extends Component {
              })
           }
 
+      handleLogin = () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+            .then(() => {
+              console.log("User Logged In Successfully")
+            })
+            .catch(error => {
+              console.log("Something Went Wrong: ", error.message)
+            })
+          }
+
 
   render(){
         return(
           <div className="App">
           <h1>Welcome to React Fire Todos</h1>
+          {
+            this.state.isAuthenticated ?
           <Dashboard 
           todos={this.state.todos}
           text={this.state.text}
@@ -69,8 +94,12 @@ export default class App extends Component {
           handleSubmit={this.handleSubmit}
           handleRemove={this.handleRemove} 
           />
+          :
+          <Login
+            handleLogin={this.handleLogin}
+            />
+        }
           </div>
-
-       )
+       );
     }
 }
