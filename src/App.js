@@ -35,8 +35,8 @@ export default class App extends Component {
     }
 
 
-      handleSubmit = e => {
-        e.preventDefault()
+      handleSubmit = event => {
+        event.preventDefault()
         firebase.database().ref('todos')
         .push({ text: this.state.text })
         .then(() => {
